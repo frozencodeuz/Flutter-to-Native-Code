@@ -14,7 +14,8 @@ class MainActivity: FlutterActivity() {
 
     MethodChannel(flutterView, channel).setMethodCallHandler { call, result ->
       if (call.method == "greetingFromNativeCode") {
-        result.success("Hello Yudi Setiawan, from Android code")
+        val name = call.argument<String>("name") ?: "unknown"
+        result.success("Hello $name, from Android code")
       }
     }
   }

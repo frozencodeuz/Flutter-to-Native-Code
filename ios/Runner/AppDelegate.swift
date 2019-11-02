@@ -12,7 +12,9 @@ import Flutter
     channel.setMethodCallHandler({
         (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
         if (call.method == "greetingFromNativeCode") {
-            result("Hello Yudi Setiawan, from iOS code")
+            let args = call.arguments as? [String: String]
+            let name = args!["name"]
+            result("Hello " + name! + ", from iOS code")
         }
     })
     GeneratedPluginRegistrant.register(with: self)
