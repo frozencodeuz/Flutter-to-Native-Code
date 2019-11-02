@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(App());
 
@@ -17,11 +18,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String message;
+  static const platform = const MethodChannel('flutter.native.code/example');
+  String _message;
 
   @override
   void initState() {
-    message = 'Hello Yudi Setiawan, from Flutter code';
+    _message = 'Hello Yudi Setiawan, from Flutter code';
     super.initState();
   }
 
@@ -37,11 +39,16 @@ class _MyAppState extends State<MyApp> {
           children: <Widget>[
             RaisedButton(
               child: Text('Tap Me'),
-              onPressed: () {
-                // TODO: do something in here
+              onPressed: () async {
+                  try {
+                    _message = await platform.invokeMethod('greetingFromNativeCode');
+                  } on PlatformException catch (e) {
+                    _message = 'Failed to invoke: ${e.message}';
+                  }
+                  setState(() {});
               },
             ),
-            Text(message),
+            Text(_message),
           ],
         ),
       ),
